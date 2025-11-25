@@ -16,15 +16,11 @@ import torch.optim as optim
 import os
 import torch.nn.functional as F
 import depth
-from itertools import chain  # 添加缺失的导入
+from itertools import chain
 
 if __name__ == "__main__":
-    '''
-            clip training code of DINet
-            in the resolution you want, using clip training code after frame training
 
-    '''
-    # 初始化设备
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # load config
     opt = DFSATrainingOptions().parse_args()
