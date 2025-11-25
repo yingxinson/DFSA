@@ -6,11 +6,11 @@ import cv2
 import numpy as np
 from sync_batchnorm import SynchronizedBatchNorm2d as BatchNorm2d
 from sync_batchnorm import SynchronizedBatchNorm1d as BatchNorm1d
-#import AdaIN
+import AdaIN
 from models.DeepFusion import DeepFusion
 import os
 
-#from models.AdaIN import calc_mean_std,adaptive_instance_normalization
+
 import torchvision
 
 
@@ -252,7 +252,7 @@ class ParametricAdaIN(nn.Module):
         self.style_fc = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),  # [B, C, H, W] -> [B, C, 1, 1]
             nn.Flatten(1),  # [B, C]
-            nn.Linear(channels, channels * 2),  # 输出 gamma 和 beta
+            nn.Linear(channels, channels * 2),
         )
 
     def calc_mean_std(self, feat):
