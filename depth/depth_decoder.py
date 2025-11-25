@@ -48,10 +48,7 @@ class DepthDecoder(nn.Module):
         self.decoder = nn.ModuleList(list(self.convs.values()))
         self.sigmoid = nn.Sigmoid()
 
-    # def upsample_and_align(self, x, target):
-    #     """上采样 x 并对齐到 target 形状"""
-    #     x = nn.functional.interpolate(x, size=target.shape[2:], mode="bilinear", align_corners=True)
-    #     return x
+
 
     def forward(self, input_features):
         self.outputs = {}
@@ -61,16 +58,15 @@ class DepthDecoder(nn.Module):
         for i in range(4, -1, -1):
             x = self.convs[("upconv", i, 0)](x)
             #x = [upsample(x)]
-            x = [nn.functional.interpolate(  # 使用 interpolate 明确指定尺寸
+            x = [nn.functional.interpolate(
                 x,
                 scale_factor=2,
                 mode="bilinear",
-                align_corners=True  # 对齐角落像素
+                align_corners=True
             )]
             if self.use_skips and i > 0:
-                #x += [input_features[i - 1]]
-                #x = [upsample(x, input_features[i - 1]), input_features[i - 1]]
-                # 获取跳跃连接的特征图，并裁剪到与上采样后的尺寸一致
+
+
                 skip = input_features[i - 1]
                 _, _, h, w = x[0].shape
                 skip = nn.functional.interpolate(skip, size=(h, w), mode="bilinear", align_corners=True)
@@ -79,23 +75,6 @@ class DepthDecoder(nn.Module):
             x = self.convs[("upconv", i, 1)](x)
             if i in self.scales:
                 self.outputs[("disp", i)] = self.sigmoid(self.convs[("dispconv", i)](x))
-    # def forward(self, input_features):
-    #     self.outputs = {}
-    #
-    #     x = input_features[-1]  # 最底层特征
-    #     for i in range(4, -1, -1):
-    #         x = self.convs[("upconv", i, 0)](x)
-    #         x = [nn.functional.interpolate(x, scale_factor=2, mode="bilinear", align_corners=True)]  # 2倍上采样
-    #
-    #         if self.use_skips and i > 0:
-    #             skip = input_features[i - 1]
-    #             x[0] = self.upsample_and_align(x[0], skip)  # 确保尺寸匹配
-    #             x.append(skip)
-    #
-    #         x = torch.cat(x, dim=1)  # 拼接通道维度
-    #         x = self.convs[("upconv", i, 1)](x)
-    #
-    #         if i in self.scales:
-    #             self.outputs[("disp", i)] = self.sigmoid(self.convs[("dispconv", i)](x))
+
 
         return self.outputs

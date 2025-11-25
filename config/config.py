@@ -72,18 +72,11 @@ class DFSATrainingOptions():
                                  help='path of pretrained depth_model')
         self.parser.add_argument('--depth_encoder_model', type=str, default="./asserts/encoder.pth",
                                  help='path of pretrained depth_encoder_model')
-        # self.parser.add_argument('--pretrained_depth_path',
-        #                          default='',
-        #                          type=str,
-        #                          help='Save data (.pth) of pretrained depth')
-        # self.parser.add_argument('--pretrained_depth_encoder_path',
-        #                          default='',
-        #                          type=str,
-        #                          help='Save data (.pth) of pretrained depth_encoder')
-        self.parser.add_argument('--pretrained_frame_DINet_path',
+
+        self.parser.add_argument('--pretrained_frame_DFSA_path',
                                  default='',
                                  type=str,
-                                 help='Save data (.pth) of frame trained DINet')
+                                 help='Save data (.pth) of frame trained DFSA')
         # =========================  Discriminator ==========================
         self.parser.add_argument('--D_num_blocks', type=int, default=4, help='num of down blocks in discriminator')
         self.parser.add_argument('--D_block_expansion', type=int, default=64, help='block expansion in discriminator')
@@ -98,7 +91,6 @@ class DFSAInferenceOptions():
     def parse_args(self):
         self.parser.add_argument('--source_channel', type=int, default=3, help='channels of source image')
         self.parser.add_argument('--ref_channel', type=int, default=15, help='channels of reference image')
-        #self.parser.add_argument('--audio_channel', type=int, default=29, help='channels of audio feature')
         self.parser.add_argument('--audio_channel', type=int, default=29, help='channels of audio feature')
         self.parser.add_argument('--mouth_region_size', type=int, default=256, help='help to resize window')
         self.parser.add_argument('--source_video_path',
@@ -113,18 +105,14 @@ class DFSAInferenceOptions():
                                  default='./asserts/examples/driving_audio_1.wav',
                                  type=str,
                                  help='path of driving audio')
-        self.parser.add_argument('--pretrained_clip_DINet_path',
-                                 default='./asserts/clip_training_DINet_256mouth.pth',
+        self.parser.add_argument('--pretrained_clip_DFSA_path',
+                                 default='./asserts/clip_training_DFSA_256mouth.pth',
                                  type=str,
-                                 help='pretrained model of DINet(clip trained)')
+                                 help='pretrained model of DFSA(clip trained)')
         self.parser.add_argument('--deepspeech_model_path',
                                  default='./asserts/output_graph.pb',
                                  type=str,
                                  help='path of deepspeech model')
-        self.parser.add_argument('--whisper_model_path',
-                                 default='./asserts/tiny.pth',
-                                 type=str,
-                                 help='path of whisper model')
         self.parser.add_argument('--res_video_dir',
                                  default='./asserts/inference_result',
                                  type=str,
