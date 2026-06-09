@@ -1,0 +1,3 @@
+video_name,PSNR,SSIM,LPIPS,FID
+videocrop3.mp4,inf,1.0,0.0,-1.305361005910582e-05
+videocrop5.mp4,inf,1.0,0.0,-2.9628277251300146e-05
